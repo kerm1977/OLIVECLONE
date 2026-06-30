@@ -337,17 +337,44 @@ void Core::DialogImportShow()
   dialog.setFileMode(QFileDialog::ExistingFiles);
   dialog.setOption(QFileDialog::DontUseNativeDialog, true);
   
-  // Add sidebar URLs for user folders
+  // Add sidebar URLs for user folders (only if they exist)
   QList<QUrl> sidebarUrls = dialog.sidebarUrls();
   QString homePath = QDir::homePath();
   
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Videos");
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Music");
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Pictures");
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Documents");
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Downloads");
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Desktop");
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Public");
+  QDir videosDir(homePath + "/Videos");
+  if (videosDir.exists()) {
+    sidebarUrls << QUrl::fromLocalFile(videosDir.absolutePath());
+  }
+  
+  QDir musicDir(homePath + "/Music");
+  if (musicDir.exists()) {
+    sidebarUrls << QUrl::fromLocalFile(musicDir.absolutePath());
+  }
+  
+  QDir picturesDir(homePath + "/Pictures");
+  if (picturesDir.exists()) {
+    sidebarUrls << QUrl::fromLocalFile(picturesDir.absolutePath());
+  }
+  
+  QDir documentsDir(homePath + "/Documents");
+  if (documentsDir.exists()) {
+    sidebarUrls << QUrl::fromLocalFile(documentsDir.absolutePath());
+  }
+  
+  QDir downloadsDir(homePath + "/Downloads");
+  if (downloadsDir.exists()) {
+    sidebarUrls << QUrl::fromLocalFile(downloadsDir.absolutePath());
+  }
+  
+  QDir desktopDir(homePath + "/Desktop");
+  if (desktopDir.exists()) {
+    sidebarUrls << QUrl::fromLocalFile(desktopDir.absolutePath());
+  }
+  
+  QDir publicDir(homePath + "/Public");
+  if (publicDir.exists()) {
+    sidebarUrls << QUrl::fromLocalFile(publicDir.absolutePath());
+  }
   
   // Add USB devices and mounted drives
   QDir media_dir("/media");
