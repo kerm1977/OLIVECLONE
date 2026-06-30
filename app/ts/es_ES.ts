@@ -2109,7 +2109,7 @@ Asegúrese de que una secuencia esté cargada y tenga un nodo Visor conectado.</
     <message>
         <location filename="../window/mainwindow/mainmenu.cpp" line="675"/>
         <source>Pointer Tool</source>
-        <translation>Puntero de Selección/Edición/Mover Clips</translation>
+        <translation>Puntero de Selección (Q)</translation>
     </message>
     <message>
         <location filename="../window/mainwindow/mainmenu.cpp" line="676"/>
@@ -4390,7 +4390,7 @@ What would you like to do with these clips?</source>
     <message>
         <location filename="../widget/toolbar/toolbar.cpp" line="96"/>
         <source>Pointer Tool</source>
-        <translation>Puntero de Selección/Edición/Mover Clips (V)</translation>
+        <translation>Puntero de Selección (Q)</translation>
     </message>
     <message>
         <location filename="../widget/toolbar/toolbar.cpp" line="97"/>

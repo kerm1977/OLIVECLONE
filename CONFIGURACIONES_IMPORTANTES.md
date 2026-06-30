@@ -109,7 +109,24 @@
 
 ---
 
-## 8. ATAJO DE TECLADO DE TRACK SELECT TOOL
+## 8. ATAJO DE TECLADO DE PUNTERO DE SELECCIÓN (POINTER TOOL)
+
+### Configuración Actual:
+- **Atajo de teclado**: Q
+- **Texto en menú**: "Puntero de Selección (Q)"
+- **Comportamiento**: Herramienta de puntero de selección para mover clips
+
+### Archivos:
+- `app/window/mainwindow/mainmenu.cpp` - Línea 202
+- `app/ts/es_ES.ts` - Líneas 2112 y 4393
+
+### Importante:
+- **NO** cambiar el atajo de teclado de Q
+- **NO** cambiar el texto de "Puntero de Selección (Q)"
+
+---
+
+## 9. ATAJO DE TECLADO DE TRACK SELECT TOOL
 
 ### Configuración Actual:
 - **Atajo de teclado**: T
@@ -123,7 +140,7 @@
 
 ---
 
-## 9. ATAJO DE TECLADO DE EDIT TOOL
+## 10. ATAJO DE TECLADO DE EDIT TOOL
 
 ### Configuración Actual:
 - **Atajo de teclado**: W
@@ -137,7 +154,7 @@
 
 ---
 
-## 10. ATAJO DE TECLADO DE TRANSITION TOOL
+## 11. ATAJO DE TECLADO DE TRANSITION TOOL
 
 ### Configuración Actual:
 - **Atajo de teclado**: Y
@@ -151,7 +168,7 @@
 
 ---
 
-## 11. ATAJO DE TECLADO DE ADD TOOL
+## 12. ATAJO DE TECLADO DE ADD TOOL
 
 ### Configuración Actual:
 - **Atajo de teclado**: Q
@@ -165,7 +182,7 @@
 
 ---
 
-## 12. IDIOMA POR DEFECTO
+## 13. IDIOMA POR DEFECTO
 
 ### Configuración Actual:
 - **Idioma**: es_ES (Español)
@@ -184,7 +201,7 @@
 | Cortar en playhead (inmediato) | X | menushared.cpp línea 50 |
 | Eliminar | D | menushared.cpp línea 48 |
 | Seleccionar todo | A | mainmenu.cpp línea 95 |
-| Puntero/Selección (Pointer) | Q | mainmenu.cpp línea 202 |
+| Puntero de Selección (Q) | Q | mainmenu.cpp línea 202 |
 | Track Select Tool | T | mainmenu.cpp línea 207 |
 | Edit Tool (mover clips) | W | mainmenu.cpp línea 212 |
 | Razor Tool (herramienta) | R | mainmenu.cpp línea 227 |
