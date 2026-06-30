@@ -209,7 +209,7 @@ MainMenu::MainMenu(MainWindow *parent) :
   tools_trackselect_item_->setData(Tool::kTrackSelect);
   tools_group_->addAction(tools_trackselect_item_);
 
-  tools_edit_item_ = tools_menu_->AddItem("edittool", this, &MainMenu::ToolItemTriggered, tr("C"));
+  tools_edit_item_ = tools_menu_->AddItem("edittool", this, &MainMenu::ToolItemTriggered, tr("W"));
   tools_edit_item_->setCheckable(true);
   tools_edit_item_->setData(Tool::kEdit);
   tools_group_->addAction(tools_edit_item_);

@@ -126,14 +126,14 @@
 ## 9. ATAJO DE TECLADO DE EDIT TOOL
 
 ### Configuración Actual:
-- **Atajo de teclado**: C
-- **Comportamiento**: Herramienta de edición
+- **Atajo de teclado**: W
+- **Comportamiento**: Herramienta de edición (puntero de selección/edición para mover clips)
 
 ### Archivos:
 - `app/window/mainwindow/mainmenu.cpp` - Línea 212
 
 ### Importante:
-- **NO** cambiar el atajo de teclado de C
+- **NO** cambiar el atajo de teclado de W
 
 ---
 
@@ -185,7 +185,7 @@
 | Eliminar | D | menushared.cpp línea 48 |
 | Seleccionar todo | A | mainmenu.cpp línea 95 |
 | Track Select Tool | T | mainmenu.cpp línea 207 |
-| Edit Tool | C | mainmenu.cpp línea 212 |
+| Edit Tool | W | mainmenu.cpp línea 212 |
 | Transition Tool | Y | mainmenu.cpp línea 252 |
 | Add Tool | Q | mainmenu.cpp línea 257 |
 
