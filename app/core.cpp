@@ -44,6 +44,7 @@
 #include "dialog/autorecovery/autorecoverydialog.h"
 #include "dialog/export/export.h"
 #include "dialog/footagerelink/footagerelinkdialog.h"
+#include "dialog/import/importdialog.h"
 #ifdef USE_OTIO
 #include "dialog/otioproperties/otiopropertiesdialog.h"
 #endif
@@ -332,82 +333,11 @@ void Core::DialogAboutShow()
 
 void Core::DialogImportShow()
 {
-  // Open dialog for user to select files with improved options
-  QFileDialog dialog(main_window_, tr("Importar Archivos..."));
-  dialog.setFileMode(QFileDialog::ExistingFiles);
-  dialog.setOption(QFileDialog::DontUseNativeDialog, true);
-  
-  // Add sidebar URLs for user folders (only if they exist)
-  QList<QUrl> sidebarUrls = dialog.sidebarUrls();
-  QString homePath = QDir::homePath();
-  
-  QDir videosDir(homePath + "/Videos");
-  if (videosDir.exists()) {
-    sidebarUrls << QUrl::fromLocalFile(videosDir.absolutePath());
-  }
-  
-  QDir musicDir(homePath + "/Music");
-  if (musicDir.exists()) {
-    sidebarUrls << QUrl::fromLocalFile(musicDir.absolutePath());
-  }
-  
-  QDir picturesDir(homePath + "/Pictures");
-  if (picturesDir.exists()) {
-    sidebarUrls << QUrl::fromLocalFile(picturesDir.absolutePath());
-  }
-  
-  QDir documentsDir(homePath + "/Documents");
-  if (documentsDir.exists()) {
-    sidebarUrls << QUrl::fromLocalFile(documentsDir.absolutePath());
-  }
-  
-  QDir downloadsDir(homePath + "/Downloads");
-  if (downloadsDir.exists()) {
-    sidebarUrls << QUrl::fromLocalFile(downloadsDir.absolutePath());
-  }
-  
-  QDir desktopDir(homePath + "/Desktop");
-  if (desktopDir.exists()) {
-    sidebarUrls << QUrl::fromLocalFile(desktopDir.absolutePath());
-  }
-  
-  QDir publicDir(homePath + "/Public");
-  if (publicDir.exists()) {
-    sidebarUrls << QUrl::fromLocalFile(publicDir.absolutePath());
-  }
-  
-  // Add USB devices and mounted drives
-  QDir media_dir("/media");
-  if (media_dir.exists()) {
-    QFileInfoList media_list = media_dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-    for (const QFileInfo& info : media_list) {
-      sidebarUrls << QUrl::fromLocalFile(info.absoluteFilePath());
-    }
-  }
-  
-  QDir mnt_dir("/mnt");
-  if (mnt_dir.exists()) {
-    QFileInfoList mnt_list = mnt_dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-    for (const QFileInfo& info : mnt_list) {
-      sidebarUrls << QUrl::fromLocalFile(info.absoluteFilePath());
-    }
-  }
-  
-  // Also check for mount points using QStorageInfo
-  QList<QStorageInfo> storage_list = QStorageInfo::mountedVolumes();
-  for (const QStorageInfo& storage : storage_list) {
-    if (storage.isValid() && storage.isReady()) {
-      QString mount_point = storage.rootPath();
-      if (mount_point != "/" && !sidebarUrls.contains(QUrl::fromLocalFile(mount_point))) {
-        sidebarUrls << QUrl::fromLocalFile(mount_point);
-      }
-    }
-  }
-  
-  dialog.setSidebarUrls(sidebarUrls);
-  
-  if (dialog.exec() == QDialog::Accepted) {
-    QStringList files = dialog.selectedFiles();
+  // Open custom import dialog with specific structure
+  ImportDialog import_dialog(main_window_);
+
+  if (import_dialog.exec() == QDialog::Accepted) {
+    QStringList files = import_dialog.GetSelectedFiles();
 
     // Check if the user actually selected files to import
     if (!files.isEmpty()) {

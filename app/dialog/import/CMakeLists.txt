@@ -14,31 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-add_subdirectory(about)
-add_subdirectory(actionsearch)
-add_subdirectory(autorecovery)
-add_subdirectory(color)
-add_subdirectory(configbase)
-add_subdirectory(diskcache)
-add_subdirectory(export)
-add_subdirectory(footageproperties)
-add_subdirectory(footagerelink)
-add_subdirectory(import)
-add_subdirectory(keyframeproperties)
-add_subdirectory(markerproperties)
-if(OpenTimelineIO_FOUND)
-  add_subdirectory(otioproperties)
-endif()
-add_subdirectory(preferences)
-add_subdirectory(progress)
-add_subdirectory(projectproperties)
-add_subdirectory(rendercancel)
-add_subdirectory(sequence)
-add_subdirectory(speedduration)
-add_subdirectory(task)
-add_subdirectory(text)
-
 set(OLIVE_SOURCES
   ${OLIVE_SOURCES}
+  dialog/import/importdialog.cpp
+  PARENT_SCOPE
+)
+
+set(OLIVE_HEADERS
+  ${OLIVE_HEADERS}
+  dialog/import/importdialog.h
   PARENT_SCOPE
 )
