@@ -92,7 +92,7 @@ MainMenu::MainMenu(MainWindow *parent) :
     edit_menu_->insertAction(actions.at(actions.indexOf(MenuShared::instance()->edit_delete_item()) + 1), edit_delete2_item_);
   }
   edit_menu_->addSeparator();
-  edit_select_all_item_ = edit_menu_->AddItem("selectall", this, &MainMenu::SelectAllTriggered, tr("Ctrl+A"));
+  edit_select_all_item_ = edit_menu_->AddItem("selectall", this, &MainMenu::SelectAllTriggered, tr("A"));
   edit_deselect_all_item_ = edit_menu_->AddItem("deselectall", this, &MainMenu::DeselectAllTriggered, tr("Ctrl+Shift+A"));
   edit_menu_->addSeparator();
   MenuShared::instance()->AddItemsForClipEditMenu(edit_menu_);
@@ -204,12 +204,12 @@ MainMenu::MainMenu(MainWindow *parent) :
   tools_pointer_item_->setData(Tool::kPointer);
   tools_group_->addAction(tools_pointer_item_);
 
-  tools_trackselect_item_ = tools_menu_->AddItem("trackselecttool", this, &MainMenu::ToolItemTriggered, tr("D"));
+  tools_trackselect_item_ = tools_menu_->AddItem("trackselecttool", this, &MainMenu::ToolItemTriggered, tr("T"));
   tools_trackselect_item_->setCheckable(true);
   tools_trackselect_item_->setData(Tool::kTrackSelect);
   tools_group_->addAction(tools_trackselect_item_);
 
-  tools_edit_item_ = tools_menu_->AddItem("edittool", this, &MainMenu::ToolItemTriggered, tr("X"));
+  tools_edit_item_ = tools_menu_->AddItem("edittool", this, &MainMenu::ToolItemTriggered, tr("C"));
   tools_edit_item_->setCheckable(true);
   tools_edit_item_->setData(Tool::kEdit);
   tools_group_->addAction(tools_edit_item_);
@@ -224,7 +224,7 @@ MainMenu::MainMenu(MainWindow *parent) :
   tools_rolling_item_->setData(Tool::kRolling);
   tools_group_->addAction(tools_rolling_item_);
 
-  tools_razor_item_ = tools_menu_->AddItem("razortool", this, &MainMenu::ToolItemTriggered, tr("C"));
+  tools_razor_item_ = tools_menu_->AddItem("razortool", this, &MainMenu::ToolItemTriggered, tr("X"));
   tools_razor_item_->setCheckable(true);
   tools_razor_item_->setData(Tool::kRazor);
   tools_group_->addAction(tools_razor_item_);
@@ -249,12 +249,12 @@ MainMenu::MainMenu(MainWindow *parent) :
   tools_zoom_item_->setData(Tool::kZoom);
   tools_group_->addAction(tools_zoom_item_);
 
-  tools_transition_item_ = tools_menu_->AddItem("transitiontool", this, &MainMenu::ToolItemTriggered, tr("T"));
+  tools_transition_item_ = tools_menu_->AddItem("transitiontool", this, &MainMenu::ToolItemTriggered, tr("Y"));
   tools_transition_item_->setCheckable(true);
   tools_transition_item_->setData(Tool::kTransition);
   tools_group_->addAction(tools_transition_item_);
 
-  tools_add_item_ = tools_menu_->AddItem("addtool", this, &MainMenu::ToolItemTriggered, tr("A"));
+  tools_add_item_ = tools_menu_->AddItem("addtool", this, &MainMenu::ToolItemTriggered, tr("Q"));
   tools_add_item_->setCheckable(true);
   tools_add_item_->setData(Tool::kAdd);
   tools_group_->addAction(tools_add_item_);
