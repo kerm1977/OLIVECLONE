@@ -1251,20 +1251,14 @@ void Core::WarnCacheFull()
 
 bool Core::SaveProjectAs()
 {
-  QFileDialog fd(main_window_, tr("Save Project As"));
+  QString fn = QFileDialog::getSaveFileName(main_window_,
+                                              tr("Save Project As"),
+                                              QString(),
+                                              GetProjectFilter(false));
 
-  fd.setAcceptMode(QFileDialog::AcceptSave);
-  fd.setNameFilter(GetProjectFilter(false));
-
-  if (fd.exec() == QDialog::Accepted) {
-    QString fn = fd.selectedFiles().first();
-
-    // Somewhat hacky method of extracting the extension from the name filter
-    const QString& name_filter = fd.selectedNameFilter();
-    int ext_index = name_filter.indexOf(QStringLiteral("(*.")) + 3;
-    QString extension = name_filter.mid(ext_index, name_filter.size() - ext_index - 1);
-
-    fn = FileFunctions::EnsureFilenameExtension(fn, extension);
+  if (!fn.isEmpty()) {
+    // Ensure filename has correct extension
+    fn = FileFunctions::EnsureFilenameExtension(fn, QStringLiteral(".olive"));
 
     open_project_->set_filename(fn);
 

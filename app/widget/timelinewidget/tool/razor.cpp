@@ -41,7 +41,9 @@ void RazorTool::MousePress(TimelineViewMouseEvent *event)
 void RazorTool::MouseMove(TimelineViewMouseEvent *event)
 {
   if (!dragging_) {
-    drag_start_ = ValidatedCoordinate(event->GetCoordinates(true));
+    // Use playhead position instead of mouse position
+    rational playhead_time = parent()->GetConnectedNode()->GetPlayhead();
+    drag_start_ = TimelineCoordinate(playhead_time, event->GetTrack());
     dragging_ = true;
   }
 
@@ -57,8 +59,8 @@ void RazorTool::MouseRelease(TimelineViewMouseEvent *event)
 {
   Q_UNUSED(event)
 
-  // Always split at the same time
-  rational split_time = drag_start_.GetFrame();
+  // Always split at the playhead time
+  rational split_time = parent()->GetConnectedNode()->GetPlayhead();
 
   QVector<Block*> blocks_to_split;
 
