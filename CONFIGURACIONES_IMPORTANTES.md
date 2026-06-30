@@ -181,13 +181,15 @@
 
 | Acción | Atajo | Archivo |
 |--------|-------|---------|
-| Corte (Razor Tool) | X | mainmenu.cpp línea 227 |
+| Cortar en playhead (inmediato) | X | menushared.cpp línea 50 |
 | Eliminar | D | menushared.cpp línea 48 |
 | Seleccionar todo | A | mainmenu.cpp línea 95 |
+| Puntero/Selección (Pointer) | Q | mainmenu.cpp línea 202 |
 | Track Select Tool | T | mainmenu.cpp línea 207 |
-| Edit Tool | W | mainmenu.cpp línea 212 |
-| Transition Tool | Y | mainmenu.cpp línea 252 |
-| Add Tool | Q | mainmenu.cpp línea 257 |
+| Edit Tool (mover clips) | W | mainmenu.cpp línea 212 |
+| Razor Tool (herramienta) | R | mainmenu.cpp línea 227 |
+| Add Tool | E | mainmenu.cpp línea 257 |
+| Record Tool | F | mainmenu.cpp línea 262 |
 
 ---
 

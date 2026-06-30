@@ -199,7 +199,7 @@ MainMenu::MainMenu(MainWindow *parent) :
 
   tools_group_ = new QActionGroup(this);
 
-  tools_pointer_item_ = tools_menu_->AddItem("pointertool", this, &MainMenu::ToolItemTriggered, tr("V"));
+  tools_pointer_item_ = tools_menu_->AddItem("pointertool", this, &MainMenu::ToolItemTriggered, tr("Q"));
   tools_pointer_item_->setCheckable(true);
   tools_pointer_item_->setData(Tool::kPointer);
   tools_group_->addAction(tools_pointer_item_);
@@ -224,7 +224,7 @@ MainMenu::MainMenu(MainWindow *parent) :
   tools_rolling_item_->setData(Tool::kRolling);
   tools_group_->addAction(tools_rolling_item_);
 
-  tools_razor_item_ = tools_menu_->AddItem("razortool", this, &MainMenu::ToolItemTriggered, tr("X"));
+  tools_razor_item_ = tools_menu_->AddItem("razortool", this, &MainMenu::ToolItemTriggered, tr("R"));
   tools_razor_item_->setCheckable(true);
   tools_razor_item_->setData(Tool::kRazor);
   tools_group_->addAction(tools_razor_item_);
@@ -254,12 +254,12 @@ MainMenu::MainMenu(MainWindow *parent) :
   tools_transition_item_->setData(Tool::kTransition);
   tools_group_->addAction(tools_transition_item_);
 
-  tools_add_item_ = tools_menu_->AddItem("addtool", this, &MainMenu::ToolItemTriggered, tr("Q"));
+  tools_add_item_ = tools_menu_->AddItem("addtool", this, &MainMenu::ToolItemTriggered, tr("E"));
   tools_add_item_->setCheckable(true);
   tools_add_item_->setData(Tool::kAdd);
   tools_group_->addAction(tools_add_item_);
 
-  tools_record_item_ = tools_menu_->AddItem("recordtool", this, &MainMenu::ToolItemTriggered, tr("R"));
+  tools_record_item_ = tools_menu_->AddItem("recordtool", this, &MainMenu::ToolItemTriggered, tr("F"));
   tools_record_item_->setCheckable(true);
   tools_record_item_->setData(Tool::kRecord);
   tools_group_->addAction(tools_record_item_);

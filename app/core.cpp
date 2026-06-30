@@ -332,12 +332,20 @@ void Core::DialogAboutShow()
 
 void Core::DialogImportShow()
 {
-  // Open native file dialog (uses system's file manager: Thunar, PCManFM, etc.)
-  QStringList files = QFileDialog::getOpenFileNames(
-    main_window_,
-    tr("Importar Archivos..."),
-    QDir::homePath()
-  );
+  QFileDialog fd(main_window_, tr("Importar Archivos"), QDir::homePath());
+  fd.setOption(QFileDialog::DontUseNativeDialog);
+  fd.setFileMode(QFileDialog::ExistingFiles);
+  fd.setLabelText(QFileDialog::LookIn,   tr("Buscar en:"));
+  fd.setLabelText(QFileDialog::FileName,  tr("Nombre de archivo:"));
+  fd.setLabelText(QFileDialog::FileType,  tr("Tipo de archivo:"));
+  fd.setLabelText(QFileDialog::Accept,    tr("Abrir"));
+  fd.setLabelText(QFileDialog::Reject,    tr("Cancelar"));
+  fd.setNameFilter(tr("Todos los archivos (*)"));
+
+  QStringList files;
+  if (fd.exec() == QDialog::Accepted) {
+    files = fd.selectedFiles();
+  }
 
   // Check if the user actually selected files to import
   if (!files.isEmpty()) {
@@ -1251,10 +1259,20 @@ void Core::WarnCacheFull()
 
 bool Core::SaveProjectAs()
 {
-  QString fn = QFileDialog::getSaveFileName(main_window_,
-                                              tr("Save Project As"),
-                                              QString(),
-                                              GetProjectFilter(false));
+  QFileDialog fd(main_window_, tr("Guardar Proyecto Como"), QDir::homePath(),
+                 GetProjectFilter(false));
+  fd.setOption(QFileDialog::DontUseNativeDialog);
+  fd.setAcceptMode(QFileDialog::AcceptSave);
+  fd.setLabelText(QFileDialog::LookIn,  tr("Buscar en:"));
+  fd.setLabelText(QFileDialog::FileName, tr("Nombre de archivo:"));
+  fd.setLabelText(QFileDialog::FileType, tr("Tipo de archivo:"));
+  fd.setLabelText(QFileDialog::Accept,   tr("Guardar"));
+  fd.setLabelText(QFileDialog::Reject,   tr("Cancelar"));
+
+  QString fn;
+  if (fd.exec() == QDialog::Accepted) {
+    fn = fd.selectedFiles().first();
+  }
 
   if (!fn.isEmpty()) {
     // Ensure filename has correct extension
@@ -1617,13 +1635,18 @@ bool Core::SetLanguage(const QString &locale)
 
 void Core::OpenProject()
 {
-  QString file = QFileDialog::getOpenFileName(main_window_,
-                                              tr("Open Project"),
-                                              QString(),
-                                              GetProjectFilter(true));
+  QFileDialog fd(main_window_, tr("Abrir Proyecto"), QDir::homePath(),
+                 GetProjectFilter(true));
+  fd.setOption(QFileDialog::DontUseNativeDialog);
+  fd.setFileMode(QFileDialog::ExistingFile);
+  fd.setLabelText(QFileDialog::LookIn,  tr("Buscar en:"));
+  fd.setLabelText(QFileDialog::FileName, tr("Nombre de archivo:"));
+  fd.setLabelText(QFileDialog::FileType, tr("Tipo de archivo:"));
+  fd.setLabelText(QFileDialog::Accept,   tr("Abrir"));
+  fd.setLabelText(QFileDialog::Reject,   tr("Cancelar"));
 
-  if (!file.isEmpty()) {
-    OpenProjectInternal(file);
+  if (fd.exec() == QDialog::Accepted) {
+    OpenProjectInternal(fd.selectedFiles().first());
   }
 }
 

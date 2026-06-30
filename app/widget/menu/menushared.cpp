@@ -47,7 +47,7 @@ MenuShared::MenuShared()
   edit_rename_item_ = Menu::CreateItem(this, "rename", this, &MenuShared::RenameSelectedTriggered, tr("F2"));
   edit_delete_item_ = Menu::CreateItem(this, "delete", this, &MenuShared::DeleteSelectedTriggered, tr("D"));
   edit_ripple_delete_item_ = Menu::CreateItem(this, "rippledelete", this, &MenuShared::RippleDeleteTriggered, tr("Shift+Del"));
-  edit_split_item_ = Menu::CreateItem(this, "split", this, &MenuShared::SplitAtPlayheadTriggered, tr("Ctrl+K"));
+  edit_split_item_ = Menu::CreateItem(this, "split", this, &MenuShared::SplitAtPlayheadTriggered, tr("X"));
   edit_speedduration_item_ = Menu::CreateItem(this, "speeddur", this, &MenuShared::SpeedDurationTriggered, tr("Ctrl+R"));
 
   // List of addable items
