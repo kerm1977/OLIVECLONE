@@ -44,6 +44,7 @@
 #include "dialog/autorecovery/autorecoverydialog.h"
 #include "dialog/export/export.h"
 #include "dialog/footagerelink/footagerelinkdialog.h"
+#include "dialog/import/importdialog.h"
 #ifdef USE_OTIO
 #include "dialog/otioproperties/otiopropertiesdialog.h"
 #endif
@@ -332,27 +333,11 @@ void Core::DialogAboutShow()
 
 void Core::DialogImportShow()
 {
-  // Open dialog for user to select files with improved options
-  QFileDialog dialog(main_window_, tr("Importar Archivos..."));
-  dialog.setFileMode(QFileDialog::ExistingFiles);
-  dialog.setOption(QFileDialog::DontUseNativeDialog, true);
-  
-  // Add sidebar URLs for user folders
-  QList<QUrl> sidebarUrls = dialog.sidebarUrls();
-  QString homePath = QDir::homePath();
-  
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Videos");
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Music");
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Pictures");
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Documents");
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Downloads");
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Desktop");
-  sidebarUrls << QUrl::fromLocalFile(homePath + "/Public");
-  
-  dialog.setSidebarUrls(sidebarUrls);
-  
-  if (dialog.exec() == QDialog::Accepted) {
-    QStringList files = dialog.selectedFiles();
+  // Open custom import dialog with full file system view
+  ImportDialog import_dialog(main_window_);
+
+  if (import_dialog.exec() == QDialog::Accepted) {
+    QStringList files = import_dialog.GetSelectedFiles();
 
     // Check if the user actually selected files to import
     if (!files.isEmpty()) {
