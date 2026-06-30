@@ -169,8 +169,7 @@ bool AudioProcessor::Open(const AudioParams &from, const AudioParams &to, double
   if (in_frame_) {
     in_frame_->sample_rate = from.sample_rate();
     in_frame_->format = from_fmt_;
-    in_frame_->channel_layout = from.channel_layout();
-    in_frame_->channels = from.channel_count();
+    av_channel_layout_from_mask(&in_frame_->ch_layout, from.channel_layout());
     in_frame_->pts = 0;
   } else {
     qCritical() << "Failed to allocate input frame";

@@ -439,9 +439,13 @@ FootageDescription FFmpegDecoder::Probe(const QString &filename, CancelAtom *can
         } else if (avstream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
 
           // Create an audio stream object
-          uint64_t channel_layout = avstream->codecpar->channel_layout;
+          uint64_t channel_layout = 0;
+          if (avstream->codecpar->ch_layout.nb_channels > 0) {
+            channel_layout = avstream->codecpar->ch_layout.u.mask;
+          }
           if (!channel_layout) {
-            channel_layout = static_cast<uint64_t>(av_get_default_channel_layout(avstream->codecpar->channels));
+            // Use default stereo layout if no layout is specified
+            channel_layout = AV_CH_LAYOUT_STEREO;
           }
 
           if (avstream->duration == AV_NOPTS_VALUE || duration_guessed_from_bitrate) {
@@ -557,16 +561,22 @@ bool FFmpegDecoder::ConformAudioInternal(const QVector<QString> &filenames, cons
     return false;
   }
 
-  // Create resampling context
-  SwrContext* resampler = swr_alloc_set_opts(nullptr,
-                                             params.channel_layout(),
-                                             FFmpegUtils::GetFFmpegSampleFormat(params.format()),
-                                             params.sample_rate(),
-                                             channel_layout,
-                                             static_cast<AVSampleFormat>(instance_.avstream()->codecpar->format),
-                                             instance_.avstream()->codecpar->sample_rate,
-                                             0,
-                                             nullptr);
+  // Create resampling context using new FFmpeg API
+  AVChannelLayout src_ch_layout = {};
+  AVChannelLayout dst_ch_layout = {};
+  av_channel_layout_from_mask(&src_ch_layout, channel_layout);
+  av_channel_layout_from_mask(&dst_ch_layout, params.channel_layout());
+
+  SwrContext* resampler = swr_alloc();
+  av_opt_set_chlayout(resampler, "in_chlayout", &src_ch_layout, 0);
+  av_opt_set_int(resampler, "in_sample_rate", instance_.avstream()->codecpar->sample_rate, 0);
+  av_opt_set_sample_fmt(resampler, "in_sample_fmt", static_cast<AVSampleFormat>(instance_.avstream()->codecpar->format), 0);
+  av_opt_set_chlayout(resampler, "out_chlayout", &dst_ch_layout, 0);
+  av_opt_set_int(resampler, "out_sample_rate", params.sample_rate(), 0);
+  av_opt_set_sample_fmt(resampler, "out_sample_fmt", FFmpegUtils::GetFFmpegSampleFormat(params.format()), 0);
+
+  av_channel_layout_uninit(&src_ch_layout);
+  av_channel_layout_uninit(&dst_ch_layout);
 
   swr_init(resampler);
 
@@ -691,11 +701,17 @@ int FFmpegDecoder::GetNativeChannelCount(AVPixelFormat pix_fmt)
 
 uint64_t FFmpegDecoder::ValidateChannelLayout(AVStream* stream)
 {
-  if (stream->codecpar->channel_layout) {
-    return stream->codecpar->channel_layout;
+  uint64_t channel_layout = 0;
+  if (stream->codecpar->ch_layout.nb_channels > 0) {
+    channel_layout = stream->codecpar->ch_layout.u.mask;
   }
-
-  return av_get_default_channel_layout(stream->codecpar->channels);
+  
+  if (!channel_layout) {
+    // Use default stereo layout if no layout is specified
+    channel_layout = AV_CH_LAYOUT_STEREO;
+  }
+  
+  return channel_layout;
 }
 
 const char *FFmpegDecoder::GetInterlacingModeInFFmpeg(VideoParams::Interlacing interlacing)

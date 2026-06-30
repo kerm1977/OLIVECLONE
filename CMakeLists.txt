@@ -109,7 +109,6 @@ set(QT_LIBRARIES
   Gui
   Widgets
   OpenGL
-  LinguistTools
   Concurrent
 )
 if (UNIX AND NOT APPLE)

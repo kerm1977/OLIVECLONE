@@ -73,7 +73,7 @@ void Config::SetDefaults()
   SetEntryInternal(QStringLiteral("AutorecoveryInterval"), NodeValue::kInt, 1);
   SetEntryInternal(QStringLiteral("AutorecoveryMaximum"), NodeValue::kInt, 20);
   SetEntryInternal(QStringLiteral("DiskCacheSaveInterval"), NodeValue::kInt, 10000);
-  SetEntryInternal(QStringLiteral("Language"), NodeValue::kText, QString());
+  SetEntryInternal(QStringLiteral("Language"), NodeValue::kText, QStringLiteral("es_ES"));
   SetEntryInternal(QStringLiteral("ScrollZooms"), NodeValue::kBoolean, false);
   SetEntryInternal(QStringLiteral("EnableSeekToImport"), NodeValue::kBoolean, false);
   SetEntryInternal(QStringLiteral("EditToolAlsoSeeks"), NodeValue::kBoolean, false);

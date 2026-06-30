@@ -332,27 +332,46 @@ void Core::DialogAboutShow()
 
 void Core::DialogImportShow()
 {
-  // Open dialog for user to select files
-  QStringList files = QFileDialog::getOpenFileNames(main_window_,
-                                                    tr("Import footage..."));
+  // Open dialog for user to select files with improved options
+  QFileDialog dialog(main_window_, tr("Importar Archivos..."));
+  dialog.setFileMode(QFileDialog::ExistingFiles);
+  dialog.setOption(QFileDialog::DontUseNativeDialog, true);
+  
+  // Add sidebar URLs for user folders
+  QList<QUrl> sidebarUrls = dialog.sidebarUrls();
+  QString homePath = QDir::homePath();
+  
+  sidebarUrls << QUrl::fromLocalFile(homePath + "/Videos");
+  sidebarUrls << QUrl::fromLocalFile(homePath + "/Music");
+  sidebarUrls << QUrl::fromLocalFile(homePath + "/Pictures");
+  sidebarUrls << QUrl::fromLocalFile(homePath + "/Documents");
+  sidebarUrls << QUrl::fromLocalFile(homePath + "/Downloads");
+  sidebarUrls << QUrl::fromLocalFile(homePath + "/Desktop");
+  sidebarUrls << QUrl::fromLocalFile(homePath + "/Public");
+  
+  dialog.setSidebarUrls(sidebarUrls);
+  
+  if (dialog.exec() == QDialog::Accepted) {
+    QStringList files = dialog.selectedFiles();
 
-  // Check if the user actually selected files to import
-  if (!files.isEmpty()) {
+    // Check if the user actually selected files to import
+    if (!files.isEmpty()) {
 
-    // Locate the most recently focused Project panel (assume that's the panel the user wants to import into)
-    ProjectPanel* active_project_panel = PanelManager::instance()->MostRecentlyFocused<ProjectPanel>();
-    Project* active_project;
+      // Locate the most recently focused Project panel (assume that's the panel the user wants to import into)
+      ProjectPanel* active_project_panel = PanelManager::instance()->MostRecentlyFocused<ProjectPanel>();
+      Project* active_project;
 
-    if (active_project_panel == nullptr // Check that we found a Project panel
-        || (active_project = active_project_panel->project()) == nullptr) { // and that we could find an active Project
-      QMessageBox::critical(main_window_, tr("Failed to import footage"), tr("Failed to find active Project panel"));
-      return;
+      if (active_project_panel == nullptr // Check that we found a Project panel
+          || (active_project = active_project_panel->project()) == nullptr) { // and that we could find an active Project
+        QMessageBox::critical(main_window_, tr("Failed to import footage"), tr("Failed to find active Project panel"));
+        return;
+      }
+
+      // Get the selected folder in this panel
+      Folder* folder = active_project_panel->GetSelectedFolder();
+
+      ImportFiles(files, folder);
     }
-
-    // Get the selected folder in this panel
-    Folder* folder = active_project_panel->GetSelectedFolder();
-
-    ImportFiles(files, folder);
   }
 }
 

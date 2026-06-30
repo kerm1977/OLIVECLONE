@@ -43,20 +43,28 @@ add_subdirectory(undo)
 add_subdirectory(widget)
 add_subdirectory(window)
 
-# Add translations
-qt_add_translation(OLIVE_QM_FILES ${OLIVE_TS_FILES})
+# Add translations (only if LinguistTools is available)
+if(Qt${QT_VERSION_MAJOR}LinguistTools_FOUND)
+  qt_add_translation(OLIVE_QM_FILES ${OLIVE_TS_FILES})
 
-set(QRC_BODY "")
-foreach(QM_FILE ${OLIVE_QM_FILES})
-  get_filename_component(QM_FILENAME_COMPONENT ${QM_FILE} NAME_WE)
-  string(APPEND QRC_BODY "<file alias=\"${QM_FILENAME_COMPONENT}\">${QM_FILE}</file>\n")
-endforeach()
-configure_file(ts/translations.qrc.in ts/translations.qrc @ONLY)
+  set(QRC_BODY "")
+  foreach(QM_FILE ${OLIVE_QM_FILES})
+    get_filename_component(QM_FILENAME_COMPONENT ${QM_FILE} NAME_WE)
+    string(APPEND QRC_BODY "<file alias=\"${QM_FILENAME_COMPONENT}\">${QM_FILE}</file>\n")
+  endforeach()
+  configure_file(ts/translations.qrc.in ts/translations.qrc @ONLY)
 
-set(OLIVE_RESOURCES
-  ${OLIVE_RESOURCES}
-  ${CMAKE_CURRENT_BINARY_DIR}/ts/translations.qrc
-)
+  set(OLIVE_RESOURCES
+    ${OLIVE_RESOURCES}
+    ${CMAKE_CURRENT_BINARY_DIR}/ts/translations.qrc
+  )
+else()
+  # Use manually compiled translations if LinguistTools is not available
+  set(OLIVE_RESOURCES
+    ${OLIVE_RESOURCES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/ts/translations.qrc
+  )
+endif()
 
 # Add version object
 add_library(olive-version-obj

@@ -643,8 +643,8 @@ Longitud: %4</translation>
     </message>
     <message>
         <location filename="../core.cpp" line="309"/>
-        <source>Import footage...</source>
-        <translation>Importar metraje...</translation>
+        <source>Importar Archivos...</source>
+        <translation>Importar Archivos...</translation>
     </message>
     <message>
         <location filename="../core.cpp" line="320"/>
