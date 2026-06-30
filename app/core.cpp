@@ -25,6 +25,8 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QFileSystemModel>
+#include <QSortFilterProxyModel>
 #include <QHBoxLayout>
 #include <QInputDialog>
 #include <QMessageBox>
@@ -330,6 +332,37 @@ void Core::DialogAboutShow()
   a.exec();
 }
 
+namespace {
+
+static const QStringList kSystemFolders = {
+  "video", "music", "pictures", "documents", "downloads",
+  "public", "run", "lock", "temp", "efi", "1000",
+  "systemmd-journald.services", "getty@ttl.services",
+  "bin", "boot", "dev", "etc", "lib", "lib32", "lib64",
+  "libx32", "mnt", "opt", "proc", "root", "sbin", "srv",
+  "sys", "usr", "var", "snap", "cdrom", "lost+found"
+};
+
+class SystemFolderFilterProxy : public QSortFilterProxyModel {
+public:
+  explicit SystemFolderFilterProxy(QObject *parent = nullptr)
+    : QSortFilterProxyModel(parent) {}
+protected:
+  bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override {
+    QFileSystemModel *fs = qobject_cast<QFileSystemModel*>(sourceModel());
+    if (!fs) return true;
+    QString parentPath = fs->filePath(source_parent);
+    if (parentPath == "/" || parentPath.isEmpty()) {
+      QModelIndex idx = fs->index(source_row, 0, source_parent);
+      QString name = fs->fileName(idx).toLower();
+      if (kSystemFolders.contains(name)) return false;
+    }
+    return true;
+  }
+};
+
+} // anonymous namespace
+
 void Core::DialogImportShow()
 {
   QFileDialog fd(main_window_, tr("Importar Archivos"), QDir::homePath());
@@ -341,6 +374,7 @@ void Core::DialogImportShow()
   fd.setLabelText(QFileDialog::Accept,    tr("Abrir"));
   fd.setLabelText(QFileDialog::Reject,    tr("Cancelar"));
   fd.setNameFilter(tr("Todos los archivos (*)"));
+  fd.setProxyModel(new SystemFolderFilterProxy(&fd));
 
   QStringList files;
   if (fd.exec() == QDialog::Accepted) {
@@ -1268,6 +1302,7 @@ bool Core::SaveProjectAs()
   fd.setLabelText(QFileDialog::FileType, tr("Tipo de archivo:"));
   fd.setLabelText(QFileDialog::Accept,   tr("Guardar"));
   fd.setLabelText(QFileDialog::Reject,   tr("Cancelar"));
+  fd.setProxyModel(new SystemFolderFilterProxy(&fd));
 
   QString fn;
   if (fd.exec() == QDialog::Accepted) {
@@ -1644,6 +1679,7 @@ void Core::OpenProject()
   fd.setLabelText(QFileDialog::FileType, tr("Tipo de archivo:"));
   fd.setLabelText(QFileDialog::Accept,   tr("Abrir"));
   fd.setLabelText(QFileDialog::Reject,   tr("Cancelar"));
+  fd.setProxyModel(new SystemFolderFilterProxy(&fd));
 
   if (fd.exec() == QDialog::Accepted) {
     OpenProjectInternal(fd.selectedFiles().first());
